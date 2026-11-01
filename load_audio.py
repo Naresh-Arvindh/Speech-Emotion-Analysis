@@ -1,15 +1,9 @@
-import numpy as np
-from scipy.io import wavfile
+import librosa
 
 def load_and_clean_audio(file_path):
-    # This is exactly your original reading logic
-    sr, data = wavfile.read(file_path)
+
+    y, sr = librosa.load(file_path, sr=None, res_type='kaiser_fast')
     
-    data = data.astype(float)
+    y_trimmed, _ = librosa.effects.trim(y, top_db=20)
     
-    if len(data.shape) > 1:
-        data = data.mean(axis=1)
-        
-    data = data - np.mean(data)
-    
-    return data, sr
+    return y_trimmed, sr

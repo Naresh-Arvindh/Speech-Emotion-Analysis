@@ -19,8 +19,9 @@ def get_audio_features(data, sr):
     delta2_std = np.std(delta2_mfcc, axis=1)
     
     features = np.hstack(
-        (mfcc_mean,
-         mfcc_std)
+        (mfcc_mean, mfcc_std,
+	delta_mean, delta_std,
+	delta2_mean, delta2_std)
     )
     
     return features
