@@ -1,9 +1,8 @@
 import os
 import numpy as np
+import kagglehub
 from load_audio import load_and_clean_audio
 from mfcc_features import get_audio_features
-
-LOCAL_DATASET_PATH = r"C:\Users\Naresh\project 1\Emotion Analysis\emotion_ds"
 
 def run_preprocessing_pipeline():
     X = []
@@ -15,9 +14,9 @@ def run_preprocessing_pipeline():
     }
     
     print(f"Scanning local files at: {LOCAL_DATASET_PATH}")
-    
+    Dynamic_dataSet_Path = kagglehub.dataset_download("uwrfkaggler/ravdess-emotional-speech-audio")
 
-    for root, _, files in os.walk(LOCAL_DATASET_PATH):
+    for root, _, files in os.walk(Dynamic_dataSet_Path):
         for file in files:
             if file.endswith(".wav"):
                 parts = file.split("-")
