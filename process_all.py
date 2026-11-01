@@ -13,9 +13,8 @@ def run_preprocessing_pipeline():
         "05": "angry", "06": "fearful", "07": "disgust", "08": "surprised"
     }
     
-    print(f"Scanning local files at: {LOCAL_DATASET_PATH}")
     Dynamic_dataSet_Path = kagglehub.dataset_download("uwrfkaggler/ravdess-emotional-speech-audio")
-
+    
     for root, _, files in os.walk(Dynamic_dataSet_Path):
         for file in files:
             if file.endswith(".wav"):
