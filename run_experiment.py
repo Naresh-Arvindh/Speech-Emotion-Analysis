@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 
 
-from data_split import split_my_data
+from test_train_split import split_my_data
 from cross_validation import run_kfold
 from evaluate_matrix import show_performance_metrics
 
