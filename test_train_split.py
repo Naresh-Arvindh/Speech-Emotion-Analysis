@@ -1,12 +1,15 @@
-from sklearn.model_selection import train_test_split
+import numpy as np
 
-def split_my_data(X, y):
+def split_my_data(X, y, actors):
+    test_speakers = [21, 22, 23, 24]
     
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y,
-        test_size=0.2,
-        stratify=y,
-        random_state=42
-    )
+    test_mask = np.isin(actors, test_speakers)
+    train_mask = ~test_mask
+    
+    X_train, y_train = X[train_mask], y[train_mask]
+    X_test, y_test = X[test_mask], y[test_mask]
+    
+    print(f"Speakers assigned to Training: {np.unique(actors[train_mask])}")
+    print(f"Speakers assigned to Testing:  {np.unique(actors[test_mask])}")
     
     return X_train, X_test, y_train, y_test

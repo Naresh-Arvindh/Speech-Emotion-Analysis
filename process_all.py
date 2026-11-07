@@ -7,20 +7,24 @@ from mfcc_features import get_audio_features
 def run_preprocessing_pipeline():
     X = []
     labels = []
+    actor_ids = [] 
     
     emotion_map = {
         "01": "neutral", "02": "calm", "03": "happy", "04": "sad",
         "05": "angry", "06": "fearful", "07": "disgust", "08": "surprised"
     }
     
-    Dynamic_dataSet_Path = kagglehub.dataset_download("uwrfkaggler/ravdess-emotional-speech-audio")
+    DYNAMIC_DATASET_PATH = kagglehub.dataset_download("uwrfkaggler/ravdess-emotional-speech-audio")
     
-    for root, _, files in os.walk(Dynamic_dataSet_Path):
+    for root, _, files in os.walk(DYNAMIC_DATASET_PATH):
         for file in files:
             if file.endswith(".wav"):
-                parts = file.split("-")
-                if len(parts) >= 3:
-                    emotion_code = parts[2] 
+                filename_without_ext = os.path.splitext(file)[0]
+                parts = filename_without_ext.split("-")
+                if len(parts) == 7:
+                    emotion_code = parts[2]
+                    actor_code = parts[6]
+                    
                     if emotion_code in emotion_map:
                         full_path = os.path.join(root, file)
                         
@@ -29,13 +33,15 @@ def run_preprocessing_pipeline():
                         
                         X.append(features)
                         labels.append(emotion_map[emotion_code])
-                        
+                        actor_ids.append(int(actor_code))                    
     X = np.array(X)
     y = np.array(labels)
+    actors = np.array(actor_ids)
     
     np.save("X_data.npy", X)
     np.save("y_data.npy", y)
-    print(f"Baseline extraction complete! Processed {len(X)} files.")
+    np.save("actors_data.npy", actors) 
+    print(f"Preprocessing complete! Processed {len(X)} files across {len(np.unique(actors))} speakers.")
 
 if __name__ == "__main__":
     run_preprocessing_pipeline()
